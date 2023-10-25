@@ -8,5 +8,9 @@ module.exports = {
   createUsers: async function (body){
     const user = await prisma.user.create({data: body});
     return user;
+  },
+  deleteUser: async function(id){
+    const user = await prisma.user.delete({where: {id}}) 
+    return user
   }
 };
