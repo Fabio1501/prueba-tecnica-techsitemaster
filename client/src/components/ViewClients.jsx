@@ -25,7 +25,7 @@ const ViewClients = () => {
 
   const getClients = async () => {
     try {
-      const { data } = await axios("http://localhost:3001/user")
+      const { data } = await axios("https://contratameya.onrender.com/user")
       setClients(data)
       setFlag(true)
     } catch (error) {

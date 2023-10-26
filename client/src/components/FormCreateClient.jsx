@@ -51,7 +51,7 @@ const FormCreateClient = () => {
           dateOfBirth,
           celPhone
         }
-        await axios.post("http://localhost:3001/user/newuser", body)
+        await axios.post("https://contratameya.onrender.com/user/newuser", body)
       }
     } catch (error) {
       console.log(error)

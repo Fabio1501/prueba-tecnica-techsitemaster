@@ -4,7 +4,7 @@ const PopUpDelete = ({ hiddenListOfClients, setHiddenListOfClients, client }) =>
 
   const deleteClient = async () => {
     try {
-      const { data } = axios.delete(`http://localhost:3001/user/${client.id}`)
+      const { data } = axios.delete(`https://contratameya.onrender.com/user/${client.id}`)
       console.log(data);
     } catch (error) {
       console.log(error);
