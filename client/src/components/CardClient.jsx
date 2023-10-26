@@ -18,14 +18,14 @@ const CardClient = ({ name, lastName, email, id, celPhone, dateOfBirth, setHidde
   }
   
   return (
-    <li className="py-3 sm:py-4">
-      <div className="flex items-center space-x-4">
+    <li className="py-3">
+      <div className="flex flex-col md:flex-row items-center gap-y-3 space-x-0 lg:space-x-4">
         <div className="flex-shrink-0">
           <div className={`bg-red-500 rounded-full h-12 w-12 text-white font-black uppercase flex items-center justify-center`}>
             {name[0]}{lastName[0]}
           </div>
         </div>
-        <div className="flex-1 min-w-0">
+        <div className="flex flex-col items-center md:items-start flex-1 min-w-0">
           <p className="text-sm font-medium text-gray-900 truncate">
             {name} {lastName}
           </p>
