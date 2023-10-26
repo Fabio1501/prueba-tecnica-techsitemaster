@@ -1,19 +1,22 @@
-import axios from "axios"
 import { Link } from "react-router-dom";
 
-const CardClient = ({ name, lastName, email, id, celPhone, dateOfBirth, setHiddenListOfClients, hiddenListOfClients }) => {
+export function isoToYMD(dateStr) {
+  let date = new Date(dateStr);
+  let year = date.getFullYear();
+  let month = date.getMonth() + 1;
+  let day = date.getDate();
+  return year + '-' + (month < 10 ? '0' : '') + month + '-' + (day < 10 ? '0' : '') + day;
+}
+
+const CardClient = ({ name, lastName, email, id, celPhone, dateOfBirth, setHiddenListOfClients, hiddenListOfClients, setClient }) => {
 
   const textWhatsapp = `Hola`
-
-  const deleteClient = async () => {
-    try {
-      const {data} = axios.delete(`http://localhost:3001/${id}`)
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
+  
+  const handleClick = () => {
+    setClient({id, name, lastName})
+    setHiddenListOfClients(!hiddenListOfClients)
   }
-
+  
   return (
     <li className="py-3 sm:py-4">
       <div className="flex items-center space-x-4">
@@ -26,13 +29,16 @@ const CardClient = ({ name, lastName, email, id, celPhone, dateOfBirth, setHidde
           <p className="text-sm font-medium text-gray-900 truncate">
             {name} {lastName}
           </p>
-          <p className="text-sm text-gray-500 truncate ">
+          <p className="text-sm text-gray-700 truncate ">
             {email}
+          </p>
+          <p className="text-sm bg-yellow-300 w-fit rounded-md px-1 text-black/70">
+          {isoToYMD(dateOfBirth)}
           </p>
         </div>
         <div className="flex items-center gap-x-3">
           <button
-            onClick={() => setHiddenListOfClients(!hiddenListOfClients)}
+            onClick={handleClick}
             className="inline-block px-4 py-2 bg-red-500 rounded-md text-white font-semibold">
             Eliminar cliente
           </button>
