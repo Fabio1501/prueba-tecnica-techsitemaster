@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router-dom'
-import Landing from './components/Landing'
 import NavBar from './components/NavBar'
-import FormCreateClient from './components/FormCreateClient'
-import ViewClients from './components/ViewClients'
+import Landing from './pages/Landing'
+import FormCreateClient from './pages/FormCreateClient'
+import ViewClients from './pages/ViewClients'
 
 function App() {
 
