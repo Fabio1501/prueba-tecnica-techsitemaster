@@ -3,6 +3,8 @@ import axios from 'axios'
 import CardClient, { isoToYMD } from "../components/CardClient";
 import PopUpDelete from "../components/PopUpDelete";
 import Charts from "../components/Charts";
+import Alert from "../components/Alert";
+import Loader from "../components/Loader";
 
 const dataChart = [
   { name: 'Menores de 30 años', value: 0 },
@@ -13,13 +15,18 @@ const dataChart = [
 const ViewClients = () => {
   const [clients, setClients] = useState([])
   const [data, setData] = useState(dataChart)
-  const [hiddenListOfClients, setHiddenListOfClients] = useState(false)
+  const [hiddenPopUpDelete, setHiddenPopUpDelete] = useState(false)
   const [client, setClient] = useState({
     id: '',
     name: '',
     lastName: ''
   })
-
+  const [hiddenLoaderObject, setHiddenLoaderObject] = useState(true)
+  const [hiddenAlertObject, setHiddenAlertObject] = useState({
+    isHidden: true,
+    text: 'Hubo un error, intentalo de nuevo.',
+    isSuccess: false
+  })
   const [flag, setFlag] = useState(false)
 
 
@@ -88,7 +95,7 @@ const ViewClients = () => {
             clients.length ?
               clients.map((client) => {
                 return (
-                  <CardClient setClient={setClient} setHiddenListOfClients={setHiddenListOfClients} hiddenListOfClients={hiddenListOfClients} name={client.name} lastName={client.lastName} email={client.email} celPhone={client.celPhone} dateOfBirth={client.dateOfBirth} key={client.id} id={client.id} />
+                  <CardClient setClient={setClient} setHiddenPopUpDelete={setHiddenPopUpDelete} hiddenPopUpDelete={hiddenPopUpDelete} name={client.name} lastName={client.lastName} email={client.email} celPhone={client.celPhone} dateOfBirth={client.dateOfBirth} key={client.id} id={client.id} />
                 )
               }) :
               <h1>Loading...</h1>
@@ -98,7 +105,9 @@ const ViewClients = () => {
       <div className="w-full lg:w-1/3">
         <Charts data={data} />
       </div>
-      <PopUpDelete client={client} hiddenListOfClients={hiddenListOfClients} setHiddenListOfClients={setHiddenListOfClients} />
+      <Loader hiddenLoaderObject={hiddenLoaderObject}/>
+      <Alert hiddenAlertObject={hiddenAlertObject}/>
+      <PopUpDelete setHiddenLoaderObject={setHiddenLoaderObject} hiddenAlertObject={hiddenAlertObject} setHiddenAlertObject={setHiddenAlertObject} client={client} hiddenPopUpDelete={hiddenPopUpDelete} setHiddenPopUpDelete={setHiddenPopUpDelete} />
     </div>
   )
 }

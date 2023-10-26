@@ -8,13 +8,13 @@ export function isoToYMD(dateStr) {
   return year + '-' + (month < 10 ? '0' : '') + month + '-' + (day < 10 ? '0' : '') + day;
 }
 
-const CardClient = ({ name, lastName, email, id, celPhone, dateOfBirth, setHiddenListOfClients, hiddenListOfClients, setClient }) => {
+const CardClient = ({ name, lastName, email, id, celPhone, dateOfBirth, setHiddenPopUpDelete, hiddenPopUpDelete, setClient }) => {
 
-  const textWhatsapp = `Hola`
+  const textWhatsapp = `Hola ${name}${lastName}. ¿Cómo estás?`
   
   const handleClick = () => {
     setClient({id, name, lastName})
-    setHiddenListOfClients(!hiddenListOfClients)
+    setHiddenPopUpDelete(!hiddenPopUpDelete)
   }
   
   return (
