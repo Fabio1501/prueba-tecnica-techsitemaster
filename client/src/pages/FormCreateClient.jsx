@@ -23,6 +23,7 @@ const FormCreateClient = () => {
   const [errors, setErrors] = useState({})
 
   const handleHiddenDropdown = (e) => {
+    e.preventDefault()
     setHiddenDropdown(!hiddenDropdown)
   }
 
