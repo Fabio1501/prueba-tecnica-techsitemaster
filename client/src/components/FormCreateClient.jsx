@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { clientObject, latinAmericanCountries } from "./utils";
 import axios from "axios";
+import { clientObject, latinAmericanCountries, validationForm } from "./utils";
+import chaos from '../assets/ccchaos.svg'
+
 
 const FormCreateClient = () => {
 
@@ -8,6 +10,7 @@ const FormCreateClient = () => {
   const [clientTemplate, setClientTemplate] = useState(clientObject)
   const [codeOption, setCodeOption] = useState('+54')
 
+  const [errors, setErrors] = useState({})
 
   const handleHiddenDropdown = (e) => {
     setHiddenDropdown(!hiddenDropwdown)
@@ -18,6 +21,12 @@ const FormCreateClient = () => {
       ...clientTemplate,
       [e.target.name]: e.target.value
     })
+    setErrors(
+      validationForm({
+        ...clientTemplate,
+        [e.target.name]: e.target.value,
+      }),
+    )
   }
 
   const formatedDate = (dateForm) => {
@@ -33,32 +42,32 @@ const FormCreateClient = () => {
     e.preventDefault()
 
     try {
-      const dateOfBirth = formatedDate(clientTemplate.dateOfBirth)
-      const celPhone = `${codeOption}${clientTemplate.celPhone}`
-      
-      const body = {
-        ...clientTemplate,
-        dateOfBirth,
-        celPhone
+      if (!errors || !Object.entries(errors).length) {
+        const dateOfBirth = formatedDate(clientTemplate.dateOfBirth)
+        const celPhone = `${codeOption}${clientTemplate.celPhone}`
+        
+        const body = {
+          ...clientTemplate,
+          dateOfBirth,
+          celPhone
+        }
+        await axios.post("http://localhost:3001/user/newuser", body)
       }
-      console.log(body)
-      const {data} = await axios.post("http://localhost:3001/user/newuser", body)
-      console.log(data)
     } catch (error) {
       console.log(error)
     }
   }
 
-  useEffect(() => { console.log(clientTemplate) }, [clientTemplate])
+  useEffect(() => { console.log(errors) }, [errors])
 
   return (
     <div className="flex items-center justify-between">
-      <div className="w-1/2 h-screen bg-black">
-
+      <div className="w-1/2 h-screen bg-black flex items-center justify-center">
+        <img src={chaos} alt="" className="w-3/4"/>
       </div>
       <div className="w-1/2 h-screen p-6 flex flex-col items-center gap-y-16">
         <h3 className="text-3xl font-black">Aquí puedes crear el cliente</h3>
-        <form onSubmit={handleSubmit} className="w-3/4 flex flex-col gap-y-4">
+        <form onSubmit={handleSubmit} className="w-3/4 flex flex-col gap-y-2">
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3.5 pointer-events-none inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md">
               <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 16">
@@ -72,6 +81,9 @@ const FormCreateClient = () => {
               onChange={handleChange}
             />
           </div>
+          {errors && (
+            <span className='text-red-600 font-semibold text-sm'>{errors?.email}</span>
+          )}
           <div>
             <div className="flex relative">
               <button onClick={handleHiddenDropdown} className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md">
@@ -102,6 +114,9 @@ const FormCreateClient = () => {
               />
             </div>
           </div>
+          {errors && (
+            <span className='text-red-600 font-semibold text-sm'>{errors?.celPhone}</span>
+          )}
           <div className="flex">
             <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md">
               <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -117,6 +132,9 @@ const FormCreateClient = () => {
               onChange={handleChange}
             />
           </div>
+          {errors && (
+            <span className='text-red-600 font-semibold text-sm'>{errors?.name}</span>
+          )}
           <div className="flex">
             <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md">
               <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -129,10 +147,16 @@ const FormCreateClient = () => {
               onChange={handleChange}
             />
           </div>
+          {errors && (
+            <span className='text-red-600 font-semibold text-sm'>{errors?.lastName}</span>
+          )}
           <div className="flex flex-col">
             <label className="text-sm ">Fecha de nacimiento</label>
             <input className="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5 " onChange={handleChange} placeholder="Fecha de nacimiento" value={clientTemplate.dateOfBirth} type="date" name="dateOfBirth" />
           </div>
+          {errors && (
+            <span className='text-red-600 font-semibold text-sm'>{errors?.dateOfBirth}</span>
+          )}
           <button className="w-full py-2 rounded-lg bg-black text-white font-semibold " type="submit">Crear cliente</button>
         </form>
       </div>
